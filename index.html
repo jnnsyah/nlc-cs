@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CTF - Submit Flag (Beginner)</title>
+  <style>
+    body { font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:#f6f8fa; color:#111; padding:32px; }
+    .card { background:#fff; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.06); padding:24px; max-width:720px; margin:24px auto; }
+    h1 { margin:0 0 12px 0; font-size:20px; }
+    p.clue { background:#0f172a; color:#fff; padding:12px 16px; border-radius:8px; font-family:monospace; display:inline-block; }
+    form { margin-top:16px; display:flex; gap:8px; align-items:center; }
+    input[type="text"]{ padding:10px; border-radius:8px; border:1px solid #d0d7de; flex:1; font-family:monospace; }
+    button { padding:10px 14px; border-radius:8px; border:0; background:#2563eb; color:#fff; cursor:pointer; }
+    .msg { margin-top:12px; font-weight:600; }
+    .hint { margin-top:10px; font-size:13px; color:#555; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>CTF — Beginner: Submit Flag</h1>
+
+    <p>Di bawah ini ada clue (flag yang tertulis <em>reversed</em>). Baca, balik lagi tulisannya, lalu submit flag asli di form.</p>
+
+    <!-- Clue: FLAG with *inside content reversed* -->
+    <p class="clue" id="clue">FLAG{tegnab-ze-ohohohoh}</p>
+
+    <form id="flagForm" onsubmit="return false;">
+      <input id="flagInput" type="text" placeholder="ketik FLAG{...} di sini" autocomplete="off" />
+      <button id="submitBtn">Submit</button>
+    </form>
+
+    <div class="msg" id="result" aria-live="polite"></div>
+
+    <div class="hint">
+      Hint: balik tulisan di dalam kurung kurawal `{ ... }` untuk mendapat flag asli.
+    </div>
+  </div>
+
+  <script>
+    // Flag asli yang benar (check dilakukan di sisi klien karena ini latihan)
+    const CORRECT_FLAG = "FLAG{hohohoho-ez-banget}";
+
+    const form = document.getElementById('flagForm');
+    const input = document.getElementById('flagInput');
+    const result = document.getElementById('result');
+
+    function normalize(s) {
+      return (s || "").trim();
+    }
+
+    function showMessage(text, ok = false) {
+      result.textContent = text;
+      result.style.color = ok ? "green" : "crimson";
+    }
+
+    document.getElementById('submitBtn').addEventListener('click', () => {
+      const attempt = normalize(input.value);
+      if (!attempt) {
+        showMessage("Tolong masukkan flag sebelum submit.", false);
+        return;
+      }
+
+      if (attempt === CORRECT_FLAG) {
+        showMessage("✅ Benar! Flag diterima. Selamat!", true);
+      } else {
+        showMessage("❌ Salah. Coba cek lagi (ingat: huruf besar/kecil dan kurung kurawal penting).", false);
+      }
+    });
+
+    // Optional: tekan Enter juga submit
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('submitBtn').click();
+      }
+    });
+  </script>
+</body>
+</html>
